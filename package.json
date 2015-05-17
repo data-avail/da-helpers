@@ -1,0 +1,24 @@
+{
+  "name": "da-helpers",
+  "version": "1.0.0",
+  "description": "tsc -w -p src",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^2.9.25",
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.5.2",
+    "gulp-typescript": "^2.7.4",
+    "loggly": "^1.0.8",
+    "mongojs": "^0.18.2",
+    "rabbit.js": "^0.4.2"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.5"
+  }
+}
