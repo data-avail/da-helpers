@@ -25,7 +25,7 @@ module logger {
         }
 
         write(obj: Object) : Promise<any> {
-            var doc = {tags : this.tags, msg: obj};
+            var doc = {tags : this.tags, msg: obj, date : new Date()};
             return this.insertAsync(doc);
         }
     }
