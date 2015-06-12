@@ -1,6 +1,6 @@
 {
   "name": "da-helpers",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "tsc -w -p src",
   "main": "dist/index.js",
   "scripts": {
