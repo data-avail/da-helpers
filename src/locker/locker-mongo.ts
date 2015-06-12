@@ -46,7 +46,7 @@ module locker {
                 writeConcern: {w: this.opts.replicas}
             };
 
-            return this.runCommandAsync(command).then((res) => res.ok && res.n == 1);
+            return (<any>this.runCommandAsync)(command).then((res) => res.ok && res.n == 1);
         }
     }
 }
