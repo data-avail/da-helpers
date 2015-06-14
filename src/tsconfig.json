@@ -7,7 +7,7 @@
     "noImplicitAny": false,
     "removeComments": true,
     "noLib": false,
-    "emitDecoratorMetadata": true,
+    "emitDecoratorMetadata": false,
     "out": "./dist/index.js"
   },
   "filesGlob": [

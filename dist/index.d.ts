@@ -1,4 +1,3 @@
-/// <reference path="../typings/tsd.d.ts" />
 declare module locker {
     interface ILockerMongoOpts {
         connection: string;
