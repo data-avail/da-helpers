@@ -5,8 +5,8 @@
     "module": "commonjs",
     "declaration": true,
     "noImplicitAny": false,
-    "removeComments": false,
-    "noLib": true,
+    "removeComments": true,
+    "noLib": false,
     "emitDecoratorMetadata": false,
     "out": "./dist/index.js"
   },

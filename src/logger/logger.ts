@@ -11,3 +11,5 @@ module logger {
         write(obj: Object) : Promise<any>
     }
 }
+
+exports.logger = logger;

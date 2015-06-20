@@ -1,4 +1,4 @@
-/// <reference path="../typings/tsd.d.ts" />
+
 declare var mongojs: any;
 declare var promise: any;
 declare module locker {
@@ -12,12 +12,6 @@ declare module locker {
 }
 declare module locker {
     interface ILocker {
-        /**
-         * Lock entity, which means checking if some item already was locked and if so return false,
-         * but if this the first lock, lock it and return true.
-         * @param id
-         * Lock id
-         */
         lock(id: string): Promise<boolean>;
     }
 }

@@ -18,4 +18,5 @@ module pubSub {
     }
 }
 
+exports.pubSub = pubSub;
 

@@ -1,4 +1,4 @@
-///<reference path="../../typings/tsd.d.ts"/>
+
 var mongojs = require("mongojs");
 var promise = require("bluebird");
 var locker;
@@ -36,7 +36,8 @@ var locker;
         return LockerMongo;
     })();
 })(locker || (locker = {}));
-///<reference path="../../typings/tsd.d.ts"/>
+///<reference path="../../typings/tsd.d.ts" ambient="true"/>
+exports.locker = locker;
 ///<reference path="../../typings/tsd.d.ts"/>
 var promise = require("bluebird");
 var logger;
@@ -102,6 +103,7 @@ var logger;
     logger.LoggerMongo = LoggerMongo;
 })(logger || (logger = {}));
 ///<reference path="../../typings/tsd.d.ts"/>
+exports.logger = logger;
 ///<reference path="../../typings/tsd.d.ts"/>
 var rabbit = require("rabbit.js");
 var promise = require("bluebird");
@@ -166,3 +168,4 @@ var pubSub;
     })(pubSub.PubSubTypes || (pubSub.PubSubTypes = {}));
     var PubSubTypes = pubSub.PubSubTypes;
 })(pubSub || (pubSub = {}));
+exports.pubSub = pubSub;
