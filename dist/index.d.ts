@@ -1,3 +1,6 @@
+/// <reference path="../typings/tsd.d.ts" />
+declare var mongojs: any;
+declare var promise: any;
 declare module locker {
     interface ILockerMongoOpts {
         connection: string;
@@ -10,6 +13,18 @@ declare module locker {
 declare module locker {
     interface ILocker {
         lock(id: string): Promise<boolean>;
+    }
+}
+declare module logger {
+    interface ILoggerComposeOpts {
+        loggly?: ILoggerLogglyOpts;
+        mongo?: ILoggerMongoOpts;
+        console?: boolean;
+    }
+    class LoggerCompose implements ILogger {
+        private loggers;
+        constructor(opts: ILoggerOpts, composeOpts: ILoggerComposeOpts);
+        write(obj: Object): Promise<any>;
     }
 }
 declare module logger {
@@ -33,18 +48,6 @@ declare module logger {
         private db;
         private insertAsync;
         constructor(opts: ILoggerOpts, mongoOpts: ILoggerMongoOpts);
-        write(obj: Object): Promise<any>;
-    }
-}
-declare module logger {
-    interface ILoggerComposeOpts {
-        loggly?: ILoggerLogglyOpts;
-        mongo?: ILoggerMongoOpts;
-        console?: boolean;
-    }
-    class LoggerCompose implements ILogger {
-        private loggers;
-        constructor(opts: ILoggerOpts, composeOpts: ILoggerComposeOpts);
         write(obj: Object): Promise<any>;
     }
 }

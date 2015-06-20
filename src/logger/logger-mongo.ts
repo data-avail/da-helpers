@@ -1,10 +1,9 @@
 ///<reference path="../../typings/tsd.d.ts"/>
+var loggly = require("loggly");
+var promise = require("bluebird");
+var mongojs = require("mongojs");
 
 module logger {
-    var loggly = require("loggly");
-    var Promise = require("bluebird");
-    var mongojs = require("mongojs");
-
 
     export interface ILoggerMongoOpts {
         connection: string
@@ -21,7 +20,7 @@ module logger {
             this.tags = [opts.pack.name, opts.pack.ver].concat(opts.tags).filter((f) => !!f);
 
             this.db = mongojs(mongoOpts.connection, [mongoOpts.collection]);
-            this.insertAsync = Promise.promisify(this.db[mongoOpts.collection].insert, this.db[mongoOpts.collection]);
+            this.insertAsync = promise.promisify(this.db[mongoOpts.collection].insert, this.db[mongoOpts.collection]);
         }
 
         write(obj: Object) : Promise<any> {

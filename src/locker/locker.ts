@@ -13,5 +13,3 @@ module locker {
     }
 
 }
-
-exports.locker = locker;

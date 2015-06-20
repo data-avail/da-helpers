@@ -1,8 +1,8 @@
 ///<reference path="../../typings/tsd.d.ts"/>
+var mongojs = require("mongojs");
+var promise = require("bluebird");
 var locker;
 (function (locker_1) {
-    var mongojs = require("mongojs");
-    var Promise = require("bluebird");
     function connectLockerMongo(opts) {
         var locker = new LockerMongo(opts);
         locker.connect();
@@ -19,7 +19,7 @@ var locker;
         }
         LockerMongo.prototype.connect = function () {
             this.db = mongojs(this.opts.connection, [this.opts.collection]);
-            this.runCommandAsync = Promise.promisify(this.db.runCommand, this.db);
+            this.runCommandAsync = promise.promisify(this.db.runCommand, this.db);
         };
         LockerMongo.prototype.disconnect = function () {
             this.db.close();
@@ -37,12 +37,32 @@ var locker;
     })();
 })(locker || (locker = {}));
 ///<reference path="../../typings/tsd.d.ts"/>
-exports.locker = locker;
 ///<reference path="../../typings/tsd.d.ts"/>
+var promise = require("bluebird");
 var logger;
 (function (logger) {
-    var loggly = require("loggly");
-    var Promise = require("bluebird");
+    var LoggerCompose = (function () {
+        function LoggerCompose(opts, composeOpts) {
+            this.loggers = [];
+            if (composeOpts.loggly)
+                this.loggers.push(new logger.LoggerLoggly(opts, composeOpts.loggly));
+            if (composeOpts.mongo)
+                this.loggers.push(new logger.LoggerMongo(opts, composeOpts.mongo));
+            if (composeOpts.console)
+                this.loggers.push({ write: function (obj) { console.log("logger>>>", obj); return promise.resolve(); } });
+        }
+        LoggerCompose.prototype.write = function (obj) {
+            return promise.all(this.loggers.map(function (m) { return m.write(obj); }));
+        };
+        return LoggerCompose;
+    })();
+    logger.LoggerCompose = LoggerCompose;
+})(logger || (logger = {}));
+///<reference path="../../typings/tsd.d.ts"/>
+var loggly = require("loggly");
+var promise = require("bluebird");
+var logger;
+(function (logger) {
     var LoggerLoggly = (function () {
         function LoggerLoggly(opts, logglyOpts) {
             var tags = [opts.pack.name, opts.pack.ver].concat(opts.tags).filter(function (f) { return !!f; });
@@ -52,7 +72,7 @@ var logger;
                 tags: tags,
                 json: true
             };
-            this.loggly = Promise.promisifyAll(loggly.createClient(logOpts));
+            this.loggly = promise.promisifyAll(loggly.createClient(logOpts));
         }
         LoggerLoggly.prototype.write = function (obj) {
             return this.loggly.logAsync(obj);
@@ -62,16 +82,16 @@ var logger;
     logger.LoggerLoggly = LoggerLoggly;
 })(logger || (logger = {}));
 ///<reference path="../../typings/tsd.d.ts"/>
+var loggly = require("loggly");
+var promise = require("bluebird");
+var mongojs = require("mongojs");
 var logger;
 (function (logger) {
-    var loggly = require("loggly");
-    var Promise = require("bluebird");
-    var mongojs = require("mongojs");
     var LoggerMongo = (function () {
         function LoggerMongo(opts, mongoOpts) {
             this.tags = [opts.pack.name, opts.pack.ver].concat(opts.tags).filter(function (f) { return !!f; });
             this.db = mongojs(mongoOpts.connection, [mongoOpts.collection]);
-            this.insertAsync = Promise.promisify(this.db[mongoOpts.collection].insert, this.db[mongoOpts.collection]);
+            this.insertAsync = promise.promisify(this.db[mongoOpts.collection].insert, this.db[mongoOpts.collection]);
         }
         LoggerMongo.prototype.write = function (obj) {
             var doc = { tags: this.tags, msg: obj, date: new Date() };
@@ -82,40 +102,18 @@ var logger;
     logger.LoggerMongo = LoggerMongo;
 })(logger || (logger = {}));
 ///<reference path="../../typings/tsd.d.ts"/>
-var logger;
-(function (logger) {
-    var Promise = require("bluebird");
-    var LoggerCompose = (function () {
-        function LoggerCompose(opts, composeOpts) {
-            this.loggers = [];
-            if (composeOpts.loggly)
-                this.loggers.push(new logger.LoggerLoggly(opts, composeOpts.loggly));
-            if (composeOpts.mongo)
-                this.loggers.push(new logger.LoggerMongo(opts, composeOpts.mongo));
-            if (composeOpts.console)
-                this.loggers.push({ write: function (obj) { console.log("logger>>>", obj); return Promise.resolve(); } });
-        }
-        LoggerCompose.prototype.write = function (obj) {
-            return Promise.all(this.loggers.map(function (m) { return m.write(obj); }));
-        };
-        return LoggerCompose;
-    })();
-    logger.LoggerCompose = LoggerCompose;
-})(logger || (logger = {}));
 ///<reference path="../../typings/tsd.d.ts"/>
-exports.logger = logger;
-///<reference path="../../typings/tsd.d.ts"/>
+var rabbit = require("rabbit.js");
+var promise = require("bluebird");
 var pubSub;
 (function (pubSub) {
-    var rabbit = require("rabbit.js");
-    var Promise = require("bluebird");
     var PubSubRabbit = (function () {
         function PubSubRabbit() {
         }
         PubSubRabbit.prototype.connect = function (opts) {
             var _this = this;
             var context = rabbit.createContext(opts.uri);
-            var deferred = Promise.defer();
+            var deferred = promise.defer();
             context.on('error', deferred.reject);
             context.on('ready', function () {
                 var socket = context.socket(pubSub.PubSubTypes[opts.type].toUpperCase());
@@ -168,4 +166,3 @@ var pubSub;
     })(pubSub.PubSubTypes || (pubSub.PubSubTypes = {}));
     var PubSubTypes = pubSub.PubSubTypes;
 })(pubSub || (pubSub = {}));
-exports.pubSub = pubSub;

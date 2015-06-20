@@ -1,9 +1,8 @@
 ///<reference path="../../typings/tsd.d.ts"/>
-module locker {
+var mongojs = require("mongojs");
+var promise = require("bluebird");
 
-    var mongojs = require("mongojs");
-    var Promise = require("bluebird");
-
+module locker {    
     export interface ILockerMongoOpts {
         connection: string
         collection: string
@@ -30,7 +29,7 @@ module locker {
 
         connect(){
             this.db = mongojs(this.opts.connection, [this.opts.collection]);
-            this.runCommandAsync = Promise.promisify(this.db.runCommand, this.db);
+            this.runCommandAsync = promise.promisify(this.db.runCommand, this.db);
         }
 
         disconnect() : void {

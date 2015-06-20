@@ -1,8 +1,7 @@
 ///<reference path="../../typings/tsd.d.ts"/>
+var promise = require("bluebird");
 
 module logger {
-
-    var Promise = require("bluebird");
 
     export interface ILoggerComposeOpts {
         loggly?: ILoggerLogglyOpts
@@ -22,11 +21,11 @@ module logger {
             if (composeOpts.mongo)
                 this.loggers.push(new LoggerMongo(opts, composeOpts.mongo));
             if (composeOpts.console)
-                this.loggers.push({write(obj) { console.log("logger>>>", obj); return Promise.resolve(); } });
+                this.loggers.push({write(obj) { console.log("logger>>>", obj); return promise.resolve(); } });
         }
 
         write(obj: Object) : Promise<any> {
-            return Promise.all(this.loggers.map(m => m.write(obj)));
+            return promise.all(this.loggers.map(m => m.write(obj)));
         }
     }
 }

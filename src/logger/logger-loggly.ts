@@ -1,8 +1,8 @@
 ///<reference path="../../typings/tsd.d.ts"/>
+var loggly = require("loggly");
+var promise = require("bluebird");
 
 module logger {
-    var loggly = require("loggly");
-    var Promise = require("bluebird");
 
     export interface ILoggerLogglyOpts  {
         token: string
@@ -21,7 +21,7 @@ module logger {
                 tags: tags,
                 json:true
             };
-            this.loggly = Promise.promisifyAll(loggly.createClient(logOpts));
+            this.loggly = promise.promisifyAll(loggly.createClient(logOpts));
         }
 
         write(obj: Object) : Promise<any> {

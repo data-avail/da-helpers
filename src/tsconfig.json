@@ -3,7 +3,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "declaration": true,
+    "declaration": false,
     "noImplicitAny": false,
     "removeComments": true,
     "noLib": false,
@@ -12,17 +12,6 @@
   },
   "filesGlob": [
     "./**/*.ts",
-    "../typings/tsd.d.ts",
     "!./node_modules/**/*.ts"
-  ],
-  "files": [
-    "./locker/locker-mongo.ts",
-    "./locker/locker.ts",
-    "./logger/logger-loggly.ts",
-    "./logger/logger-mongo.ts",
-    "./logger/logger-compose.ts",
-    "./logger/logger.ts",
-    "./pub-sub/pub-sub-rabbit.ts",
-    "./pub-sub/pub-sub.ts"
   ]
 }

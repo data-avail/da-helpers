@@ -1,10 +1,10 @@
 ///<reference path="../../typings/tsd.d.ts"/>
+var rabbit = require("rabbit.js");
+var promise = require("bluebird");
+
 
 module pubSub {
-
-    var rabbit = require("rabbit.js");
-    var Promise = require("bluebird");
-
+    
     export class PubSubRabbit implements IPubSub {
 
         private context:any;
@@ -14,7 +14,7 @@ module pubSub {
 
             var context = rabbit.createContext(opts.uri);
 
-            var deferred = Promise.defer();
+            var deferred = promise.defer();
 
             context.on('error', deferred.reject);
 
