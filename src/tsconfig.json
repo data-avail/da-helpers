@@ -3,10 +3,10 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "declaration": false,
+    "declaration": true,
     "noImplicitAny": false,
-    "removeComments": true,
-    "noLib": false,
+    "removeComments": false,
+    "noLib": true,
     "emitDecoratorMetadata": false,
     "out": "./dist/index.js"
   },

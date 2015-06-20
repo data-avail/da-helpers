@@ -12,9 +12,16 @@ declare module locker {
 }
 declare module locker {
     interface ILocker {
+        /**
+         * Lock entity, which means checking if some item already was locked and if so return false,
+         * but if this the first lock, lock it and return true.
+         * @param id
+         * Lock id
+         */
         lock(id: string): Promise<boolean>;
     }
 }
+declare var promise: any;
 declare module logger {
     interface ILoggerComposeOpts {
         loggly?: ILoggerLogglyOpts;
@@ -27,6 +34,8 @@ declare module logger {
         write(obj: Object): Promise<any>;
     }
 }
+declare var loggly: any;
+declare var promise: any;
 declare module logger {
     interface ILoggerLogglyOpts {
         token: string;
@@ -38,6 +47,9 @@ declare module logger {
         write(obj: Object): Promise<any>;
     }
 }
+declare var loggly: any;
+declare var promise: any;
+declare var mongojs: any;
 declare module logger {
     interface ILoggerMongoOpts {
         connection: string;
@@ -63,6 +75,8 @@ declare module logger {
         write(obj: Object): Promise<any>;
     }
 }
+declare var rabbit: any;
+declare var promise: any;
 declare module pubSub {
     class PubSubRabbit implements IPubSub {
         private context;
